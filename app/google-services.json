@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "609817132391",
+    "project_id": "paceup-6fd48",
+    "storage_bucket": "paceup-6fd48.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:609817132391:android:5e14756a9985df53aa43c2",
+        "android_client_info": {
+          "package_name": "com.example.firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN0bq7tX4mU5-IveBslEnajxX9r7kdOUs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
