@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth bush;
@@ -40,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
         button = findViewById(R.id.button);
         email = findViewById(R.id.editTextText);
         password = findViewById(R.id.editTextText2);
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("STUDENTS").child("studentId").setValue("studentsInfo");
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
