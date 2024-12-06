@@ -24,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAuth bush;
+    private FirebaseAuth auth;
     private EditText email;
     private EditText password;
     private Button button;
@@ -38,10 +38,12 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        bush = FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
         button = findViewById(R.id.button);
         email = findViewById(R.id.editTextText);
         password = findViewById(R.id.editTextText2);
+        auth = FirebaseAuth.getInstance();
+        fire_base_handler f = new fire_base_handler(auth,this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("STUDENTS").child("studentId").setValue("studentsInfo");
@@ -51,20 +53,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String sEmail = email.getText().toString();
                 String sPassword = password.getText().toString();
+                f.SignIn(sEmail,sPassword);
 
-                if(TextUtils.isEmpty(sEmail)||TextUtils.isEmpty(sPassword))
-                {
-                    Toast.makeText(MainActivity.this, "you are acoustic", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    bush.signInWithEmailAndPassword(sEmail, sPassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Toast.makeText(MainActivity.this, "you are genius+", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-                //לא עושים פייר בייס במחלקה שהיא לא מחלקה משלו. חובה ליצור מחלקה בשם פייר בייס ולשים שם את כל הפקודות
             }
         });
     }
