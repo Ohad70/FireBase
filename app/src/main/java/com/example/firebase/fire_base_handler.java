@@ -33,9 +33,22 @@ public class fire_base_handler
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(context, "you are genius+", Toast.LENGTH_SHORT).show();
 
+                    }
+                });
+            }
+        }
+            public void registerUser (String rEmail, String rPassword, String rUsername){
+                if (TextUtils.isEmpty(rEmail) || TextUtils.isEmpty(rPassword)) {
+                    Toast.makeText(context, "you are acoustic", Toast.LENGTH_SHORT).show();
+                } else {
+                    auth.createUserWithEmailAndPassword(rEmail, rPassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Toast.makeText(context, "you are genius+", Toast.LENGTH_SHORT).show();
+
                         }
                     });
-        }
-
-  }
+                }
+            }
 }
+
