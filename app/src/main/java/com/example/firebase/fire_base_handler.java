@@ -22,7 +22,8 @@ public class fire_base_handler
         this.context = context;
     }
 
-        public void SignIn(String sEmail, String sPassword){
+        public boolean SignIn(String sEmail, String sPassword){
+            boolean JoinSuc = false;
             if(TextUtils.isEmpty(sEmail)||TextUtils.isEmpty(sPassword))
                 {
                 Toast.makeText(context, "you are acoustic", Toast.LENGTH_SHORT).show();
@@ -32,10 +33,11 @@ public class fire_base_handler
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(context, "you are genius+", Toast.LENGTH_SHORT).show();
-
                     }
                 });
+                JoinSuc = true;
             }
+            return JoinSuc;
         }
             public void registerUser (String rEmail, String rPassword, String rUsername){
                 if (TextUtils.isEmpty(rEmail) || TextUtils.isEmpty(rPassword)) {

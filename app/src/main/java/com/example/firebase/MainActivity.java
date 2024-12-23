@@ -54,10 +54,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String sEmail = email.getText().toString();
                 String sPassword = password.getText().toString();
-                f.SignIn(sEmail,sPassword);
+                if (f.SignIn(sEmail,sPassword)){
+
+                }
 
             }
+
         });
+
 
     }
 

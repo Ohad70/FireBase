@@ -1,6 +1,7 @@
 package com.example.firebase;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -52,9 +53,15 @@ public class register extends AppCompatActivity {
                 String rEmail = email.getText().toString();
                 String rPassword = password.getText().toString();
                 String rUserName = username.getText().toString();
-                d.registerUser(rUserName,rPassword, rUserName);
+                d.registerUser(rEmail,rPassword, rUserName);
 
             }
         });
+
+    }
+
+    public void onClickToHub(View view) {
+        Intent intent = new Intent(this , MainActivity.class);
+        startActivity(intent);
     }
 }
