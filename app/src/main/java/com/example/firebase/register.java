@@ -37,23 +37,23 @@ public class register extends AppCompatActivity {
             return insets;
         });
 
-        auth = FirebaseAuth.getInstance();
+
         button = findViewById(R.id.button2);
         email = findViewById(R.id.editTextText3);
         password = findViewById(R.id.editTextText4);
-        username = findViewById(R.id.editTextText5);
+        //username = findViewById(R.id.editTextText5);
         auth = FirebaseAuth.getInstance();
-        fire_base_handler d = new fire_base_handler(auth,this);
+        FireBaseHandler d = new FireBaseHandler(FirebaseAuth.getInstance(),this);
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String rEmail = email.getText().toString();
-                String rPassword = password.getText().toString();
-                String rUserName = username.getText().toString();
-                d.registerUser(rEmail,rPassword, rUserName);
+                String rEmail = String.valueOf(email.getText());
+                String rPassword = String.valueOf(password.getText());
+                //String rUserName = username.getText().toString();
+                d.registerUser(rEmail,rPassword);
 
             }
         });
