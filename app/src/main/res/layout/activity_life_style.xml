@@ -7,4 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".LifeStyle">
 
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="414dp"
+        android:layout_height="180dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="-2dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/button11"
+        android:layout_width="413dp"
+        android:layout_height="184dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="184dp" />
+
+    <Button
+        android:id="@+id/button12"
+        android:layout_width="408dp"
+        android:layout_height="188dp"
+        android:text="Button"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="368dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
