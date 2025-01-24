@@ -27,4 +27,10 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, LifeStyle.class);
         startActivity(intent);
     }
+    public void onClickToHome(View view) {
+        Intent intent = new Intent(this, Home.class);
+        startActivity(intent);
+    }
+
+
 }
