@@ -2,14 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/Settings"
-        android:icon="@drawable/baseline_settings_24"
-        android:title="Settings" />
-
+        android:id="@+id/Profile"
+        android:icon="@drawable/baseline_person_24"
+        android:title="Profile" />
     <item
         android:id="@+id/LifeStyle"
         android:icon="@drawable/baseline_fitness_center_24"
         android:title="Life" />
+
+    <item
+        android:id="@+id/Settings"
+        android:icon="@drawable/baseline_settings_24"
+        android:title="Setting" />
 
     <item android:title="Home"
         android:icon="@drawable/baseline_home_24"
@@ -19,8 +23,4 @@
         android:id="@+id/Running"
         android:icon="@drawable/baseline_directions_run_24"
         android:title="Runs" />
-
-    <item android:title="Profile"
-        android:icon="@drawable/baseline_person_24"
-        android:id="@+id/Profile"/>
 </menu>

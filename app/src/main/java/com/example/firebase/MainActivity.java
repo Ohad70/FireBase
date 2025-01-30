@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
     public void OnclickToHome(View view) {
-        Intent intent = new Intent(this, Home.class);
+        Intent intent = new Intent(this, Breath.class);
         startActivity(intent);
     }
 
