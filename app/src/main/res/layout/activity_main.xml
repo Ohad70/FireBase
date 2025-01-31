@@ -71,4 +71,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.897" />
 
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home"
+        android:onClick="onClickToHome"
+        tools:layout_editor_absoluteX="174dp"
+        tools:layout_editor_absoluteY="108dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
