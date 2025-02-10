@@ -42,8 +42,8 @@ public class Home extends AppCompatActivity {
                 case R.id.home:
                     replaceFragment(new HomeFragment());
                     break;
-                case R.id.profile:
-                    replaceFragment(new ProfileFragment());
+                case R.id.run:
+                    replaceFragment(new RunFragment());
                     break;
                 case R.id.life:
                     replaceFragment(new LifeStyleFragment());
@@ -69,10 +69,7 @@ public class Home extends AppCompatActivity {
         fragmentTransaction.replace(R.id.frame_layout,fragment);
         fragmentTransaction.commit();
     }
-    public void onClickToLife(View view) {
-        Intent intent = new Intent(this, LifeStyle.class);
-        startActivity(intent);
-    }
+
     public void onClickToHome(View view) {
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
