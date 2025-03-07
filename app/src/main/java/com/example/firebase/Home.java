@@ -60,13 +60,29 @@ public class Home extends AppCompatActivity {
 
             return true;
         });
+
+
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
 
-        FragmentManager fragmentManger = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManger.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        // Check if the fragment is already added to avoid replacing it
+        if (currentFragment != null && currentFragment.getClass().equals(fragment.getClass())) {
+            return;  // Avoid replacing the fragment if it's the same as the current one
+        }
+
+        // Create a fragment transaction to replace the fragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        // Replace the current fragment
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+
+        // Optionally add to back stack for proper back navigation
+        fragmentTransaction.addToBackStack(null);
+
+        // Commit the transaction
         fragmentTransaction.commit();
     }
 
@@ -74,6 +90,7 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
+
 
 
 
