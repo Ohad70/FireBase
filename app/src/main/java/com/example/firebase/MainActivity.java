@@ -61,8 +61,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, register.class);
         startActivity(intent);
     }
-    public void OnclickToHome(View view) {
-        Intent intent = new Intent(this, MealShare.class);
+
+    public void OnclickToBreath(View view) {
+        Intent intent = new Intent(this, Breath.class);
         startActivity(intent);
     }
 
