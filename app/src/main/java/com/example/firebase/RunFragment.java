@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Looper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +91,27 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
             isRunning = false;
             startRunButton.setText("Start Run");
             fusedLocationClient.removeLocationUpdates(locationCallback);  // Stop location updates
+            saveRunRecord();
         }
     }
+
+    private void saveRunRecord() {
+        float distance = totalDistance;
+        long time = elapsedTime;
+        float avgSpeed = (distance / 1000f) / (time / 3600000f); // km/h
+        long timestamp = System.currentTimeMillis();
+
+        RunRecord record = new RunRecord(distance, time, avgSpeed, timestamp);
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("runs");
+        String runId = dbRef.push().getKey(); // Unique ID
+        if (runId != null) {
+            dbRef.child(runId).setValue(record)
+                    .addOnSuccessListener(aVoid -> Log.d("RunFragment", "Run saved"))
+                    .addOnFailureListener(e -> Log.e("RunFragment", "Error saving run", e));
+        }
+    }
+
 
     @Override
     public void onMapReady(GoogleMap googleMap) {

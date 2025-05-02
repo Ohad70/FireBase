@@ -1,12 +1,17 @@
 package com.example.firebase;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -16,11 +21,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText email;
     private EditText password;
     private Button button;
+    private WifiReceiver wifiReceiver;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Create and register the BroadcastReceiver to listen for connectivity changes
+        wifiReceiver = new WifiReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(wifiReceiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        // Unregister the receiver when the fragment is paused
+        if (wifiReceiver != null) {
+            unregisterReceiver(wifiReceiver);
+        }
     }
 
     public void onClickToLid(View view) {

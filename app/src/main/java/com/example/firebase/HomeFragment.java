@@ -24,8 +24,8 @@ import android.Manifest;
 
 public class HomeFragment extends Fragment {
 
-    private WifiReceiver wifiReceiver;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,25 +34,7 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        // Create and register the BroadcastReceiver to listen for connectivity changes
-        wifiReceiver = new WifiReceiver();
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        getActivity().registerReceiver(wifiReceiver, filter);  // Use getActivity() to access the context
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        // Unregister the receiver when the fragment is paused
-        if (wifiReceiver != null) {
-            getActivity().unregisterReceiver(wifiReceiver);
-        }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
