@@ -51,10 +51,15 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
     private long elapsedTime = 0;
     private Button startRunButton;
     private TextView distanceTextView, timeTextView, speedTextView;
+    private float avgSpeed;
+    private DatabaseReference databaseReference;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_run, container, false);
+
+
+        databaseReference = FirebaseDatabase.getInstance().getReference("runs");
 
         // Initialize Map
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
@@ -95,22 +100,6 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    private void saveRunRecord() {
-        float distance = totalDistance;
-        long time = elapsedTime;
-        float avgSpeed = (distance / 1000f) / (time / 3600000f); // km/h
-        long timestamp = System.currentTimeMillis();
-
-        RunRecord record = new RunRecord(distance, time, avgSpeed, timestamp);
-
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("runs");
-        String runId = dbRef.push().getKey(); // Unique ID
-        if (runId != null) {
-            dbRef.child(runId).setValue(record)
-                    .addOnSuccessListener(aVoid -> Log.d("RunFragment", "Run saved"))
-                    .addOnFailureListener(e -> Log.e("RunFragment", "Error saving run", e));
-        }
-    }
 
 
     @Override
@@ -218,5 +207,23 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
         distanceTextView.setText("Distance: " + String.format("%.2f", distanceInKm) + " km");
         timeTextView.setText("Time: " + minutes + ":" + String.format("%02d", seconds));
         speedTextView.setText("Speed: " + String.format("%.2f", speed) + " km/h");
+    }
+
+    private void saveRunRecord() {
+        // Calculate elapsed time and average speed
+        elapsedTime = System.currentTimeMillis() - startTime; // Elapsed time in ms
+        avgSpeed = (totalDistance / 1000) / (elapsedTime / 3600000f); // km/h
+
+        // Create a RunRecord object
+        long timestamp = System.currentTimeMillis();
+        RunRecord runRecord = new RunRecord(totalDistance, elapsedTime, avgSpeed, timestamp);
+
+        // Push the data to Firebase
+        String runId = databaseReference.push().getKey(); // Generate a unique key for this run
+        if (runId != null) {
+            databaseReference.child(runId).setValue(runRecord)
+                    .addOnSuccessListener(aVoid -> Log.d("RunFragment", "Run data saved successfully"))
+                    .addOnFailureListener(e -> Log.e("RunFragment", "Error saving run data", e));
+        }
     }
 }
