@@ -43,32 +43,16 @@ public class RunningLogFragment extends Fragment {
         adapter = new RunRecordAdapter(runList);
         recyclerView.setAdapter(adapter);
 
-        // Load data from Firebase
-        loadRunRecords();
+        FireBaseHandler.loadRunRecords(new OnRunRecordsLoadedListener() {
+            @Override
+            public void onRunRecordsLoaded(List<RunRecord> loadedRuns) {
+                runList.clear();
+                runList.addAll(loadedRuns);
+                adapter.notifyDataSetChanged();
+            }
+        });
 
         return view;
     }
 
-    private void loadRunRecords() {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("runs");
-        dbRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                runList.clear();
-                for (DataSnapshot data : snapshot.getChildren()) {
-                    RunRecord run = data.getValue(RunRecord.class);
-                    if (run != null) {
-                        runList.add(run);
-                    }
-                }
-                Collections.reverse(runList); // Newest run at the top
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("RunningRecords", "Failed to load data", error.toException());
-            }
-        });
-    }
 }

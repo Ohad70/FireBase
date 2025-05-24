@@ -3,47 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- Map Fragment -->
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
-    <!-- Add a Button to Start/Stop the Run -->
+    <!-- LinearLayout for Distance, Time, Speed -->
+    <LinearLayout
+        android:id="@+id/infoLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@id/startRunButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp">
+
+        <TextView
+            android:id="@+id/distanceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Distance: 0.0 km"
+            android:textSize="18sp"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/timeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time: 0:00"
+            android:textSize="18sp"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/speedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed: 0.0 km/h"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <!-- Start Button -->
     <Button
         android:id="@+id/startRunButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start Run"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <!-- Add TextViews to display Distance, Time, and Speed -->
-    <TextView
-        android:id="@+id/distanceTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Distance: 0.0 km"
-        android:textSize="18sp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="10dp"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:id="@+id/timeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Time: 0:00"
-        android:textSize="18sp"
-        android:layout_below="@id/distanceTextView"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:id="@+id/speedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Speed: 0.0 km/h"
-        android:textSize="18sp"
-        android:layout_below="@id/timeTextView"
-        android:layout_alignParentStart="true"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"/>
 </RelativeLayout>

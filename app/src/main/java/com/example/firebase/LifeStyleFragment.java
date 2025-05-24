@@ -12,6 +12,9 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -22,8 +25,11 @@ public class LifeStyleFragment extends Fragment {
     private Button button6;  // כפתור למעבר לעמוד Breath
     private TextView timerText;
     private View breathingCircle;
+    private TextView textView2;
 
     private Handler handler;
+    private boolean isBreathMode = true;  // מצב התרגול מופעל בהתחלה
+    private WebView webView;
 
     // שלבים וקביעות
     private final int INHALE = 0;
@@ -54,6 +60,32 @@ public class LifeStyleFragment extends Fragment {
         button6 = view.findViewById(R.id.button6);  // קישור לכפתור watch
         timerText = view.findViewById(R.id.timerText);
         breathingCircle = view.findViewById(R.id.breathingCircle);
+        textView2 = view.findViewById(R.id.textView2);
+
+        webView = view.findViewById(R.id.webView);
+
+        // הפעלת JavaScript
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+
+        // דפדפן פנימי
+        webView.setWebViewClient(new WebViewClient());
+
+        String videoHtml1 = "<iframe width=\"100%\" height=\"315\" src=\"https://www.youtube.com/embed/kpSkoXRrZnE?start=17\" " +
+                "frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" " +
+                "allowfullscreen></iframe>";
+
+        String videoHtml2 = "<iframe width=\"100%\" height=\"315\" src=\"https://www.youtube.com/embed/Rt08wzTYKHg\" " +
+                "frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" " +
+                "allowfullscreen></iframe>";
+
+        String videoHtml3 = "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/etfrYXSbEDc?si=urhzgZNaIW2ip_th\" " +
+                "title=\"YouTube video player\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" " +
+                "referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>";
+
+        String html = "<html><body style='margin:0;padding:0;'>" + videoHtml1 + "<br><br>" + videoHtml2 + "<br><br>" + videoHtml3 +"</body> </html>";
+
+        webView.loadData(html, "text/html", "utf-8");
 
         handler = new Handler();
 
@@ -71,13 +103,12 @@ public class LifeStyleFragment extends Fragment {
             }
         });
 
-        // הוספת Intent לכפתור button6
         button6.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), Breath.class);
-            startActivity(intent);
+            toggleMode();
         });
 
         return view;
+
     }
 
     // Runnable שמבצע את האנימציה לפי שלבים עם עצירה ב-Hold
@@ -146,4 +177,27 @@ public class LifeStyleFragment extends Fragment {
             }
         }, 0);
     }
+
+    private void toggleMode() {
+        isBreathMode = !isBreathMode;
+
+        if (isBreathMode) {
+            webView.setVisibility(View.GONE);
+            btnStart.setVisibility(View.VISIBLE);
+            textPhase.setVisibility(View.VISIBLE);
+            timerText.setVisibility(View.VISIBLE);
+            breathingCircle.setVisibility(View.VISIBLE);
+            button6.setText("Watch");
+            textView2.setText("YouTube Guides:");
+        } else {
+            webView.setVisibility(View.VISIBLE);
+            btnStart.setVisibility(View.GONE);
+            textPhase.setVisibility(View.GONE);
+            timerText.setVisibility(View.GONE);
+            breathingCircle.setVisibility(View.GONE);
+            button6.setText("Exercises");
+            textView2.setText("Breathing Exercises:"); // ← שורת השינוי החשוב
+        }
+    }
+
 }

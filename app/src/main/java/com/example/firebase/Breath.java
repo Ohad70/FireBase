@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class Breath extends AppCompatActivity {
 
-    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,25 +33,7 @@ public class Breath extends AppCompatActivity {
             return insets;
         });
 
-        webView = findViewById(R.id.webView);
 
-        // מאפשר טעינת JavaScript
-        WebSettings webSettings = webView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-
-        // פותח את הדף בתוך האפליקציה, לא בדפדפן
-        webView.setWebViewClient(new WebViewClient());
-
-        // כתובת ה-Embed של הסרטון ביוטיוב (הוספתי גם start=17)
-        String videoHtml = "<iframe width=\"100%\" height=\"315\" src=\"https://www.youtube.com/embed/kpSkoXRrZnE?start=17\" " +
-                "frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" " +
-                "allowfullscreen></iframe>";
-
-        // נעטוף ב-html בסיסי
-        String html = "<html><body style='margin:0;padding:0;'>" + videoHtml + "</body></html>";
-
-        // טוען את הדף
-        webView.loadData(html, "text/html", "utf-8");
 
     }
 

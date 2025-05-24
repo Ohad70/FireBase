@@ -46,8 +46,7 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         FireBaseHandler f = new FireBaseHandler(auth,this);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("STUDENTS").child("studentId").setValue("studentsInfo");
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
                 String sEmail = email.getText().toString();
                 String sPassword = password.getText().toString();
                 f.SignIn(sEmail,sPassword);
-
-
 
             }
 
@@ -67,15 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
-        // Create and register the BroadcastReceiver to listen for connectivity changes
-        wifiReceiver = new WifiReceiver();
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(wifiReceiver, filter);
-    }
 
     @Override
     public void onPause() {

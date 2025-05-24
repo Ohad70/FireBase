@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- צבע הרקע שקוף (ישמר הרקע הכללי של המסך) -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- קו מסגרת שחור -->
+    <stroke
+        android:width="2dp"
+        android:color="#000000" />
+</shape>

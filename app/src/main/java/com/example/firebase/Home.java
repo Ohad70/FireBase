@@ -2,6 +2,8 @@ package com.example.firebase;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Switch;
@@ -21,6 +23,8 @@ import com.example.firebase.databinding.ActivityHomeBinding;
 public class Home extends AppCompatActivity {
 
     ActivityHomeBinding binding;
+    private WifiReceiver wifiReceiver;
+
     @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +97,18 @@ public class Home extends AppCompatActivity {
         Intent intent = new Intent(this, Home.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Create and register the BroadcastReceiver to listen for connectivity changes
+        wifiReceiver = new WifiReceiver();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(wifiReceiver, filter);
+    }
+
+
 
 
 
