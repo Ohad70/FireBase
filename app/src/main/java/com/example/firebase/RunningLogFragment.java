@@ -43,7 +43,7 @@ public class RunningLogFragment extends Fragment {
         adapter = new RunRecordAdapter(runList);
         recyclerView.setAdapter(adapter);
 
-        FireBaseHandler.loadRunRecords(new OnRunRecordsLoadedListener() {
+        FireBaseHandler.loadRunRecords(new FireBaseHandler.OnRunRecordsLoadedListener() {
             @Override
             public void onRunRecordsLoaded(List<RunRecord> loadedRuns) {
                 runList.clear();

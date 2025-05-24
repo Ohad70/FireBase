@@ -22,27 +22,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-public class FireBaseHandler
-{
+public class FireBaseHandler {
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference myRef = database.getReference();
     private static FirebaseAuth auth;
     private static Context context;
 
-    public FireBaseHandler(FirebaseAuth auth, Context context){
+    public FireBaseHandler(FirebaseAuth auth, Context context) {
         this.auth = auth;
         this.context = context;
     }
 
-    public void SignIn(String sEmail, String sPassword){
-
-        if(TextUtils.isEmpty(sEmail)||TextUtils.isEmpty(sPassword))
-        {
+    public void SignIn(String sEmail, String sPassword) {
+        if (TextUtils.isEmpty(sEmail) || TextUtils.isEmpty(sPassword)) {
             Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             auth.signInWithEmailAndPassword(sEmail, sPassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
@@ -53,11 +48,10 @@ public class FireBaseHandler
                     context.startActivity(intent);
                 }
             });
-
         }
-
     }
-    public void registerUser (String rEmail, String rPassword){
+
+    public void registerUser(String rEmail, String rPassword) {
         if (TextUtils.isEmpty(rEmail) || TextUtils.isEmpty(rPassword)) {
             Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show();
         } else {
@@ -74,16 +68,23 @@ public class FireBaseHandler
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, e.getMessage().toString(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
                     Log.e("FireBaseHandler", "Email or password is empty");
                 }
             });
-
         }
     }
 
     public static void loadRunRecords(OnRunRecordsLoadedListener listener) {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("runs");
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            Log.e("FireBaseHandler", "No user signed in");
+            listener.onRunRecordsLoaded(Collections.emptyList());
+            return;
+        }
+
+        String uid = auth.getCurrentUser().getUid();
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("runs").child(uid);
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -95,14 +96,37 @@ public class FireBaseHandler
                     }
                 }
                 Collections.reverse(tempList);
-                listener.onRunRecordsLoaded(tempList); // Callback
+                listener.onRunRecordsLoaded(tempList);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("FirebaseHandler", "Failed to load data", error.toException());
+                Log.e("FireBaseHandler", "Failed to load data", error.toException());
             }
         });
     }
 
+    public static void saveRunRecordForCurrentUser(RunRecord runRecord) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() == null) {
+            Log.e("FireBaseHandler", "No user signed in");
+            return;
+        }
+        String uid = auth.getCurrentUser().getUid();
+        DatabaseReference runsRef = FirebaseDatabase.getInstance().getReference("runs").child(uid);
+        String runId = runsRef.push().getKey();
+        if (runId != null) {
+            runsRef.child(runId).setValue(runRecord)
+                    .addOnSuccessListener(aVoid -> Log.d("FireBaseHandler", "Run saved successfully"))
+                    .addOnFailureListener(e -> Log.e("FireBaseHandler", "Failed to save run", e));
+        }
+    }
+
+
+
+
+
+    public interface OnRunRecordsLoadedListener {
+        void onRunRecordsLoaded(List<RunRecord> runRecords);
+    }
 }

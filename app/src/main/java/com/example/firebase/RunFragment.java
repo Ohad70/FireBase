@@ -79,6 +79,7 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
         // Button click listener to start/stop the run
         startRunButton.setOnClickListener(v -> startStopRun());
 
+
         return view;
     }
 
@@ -87,15 +88,19 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
             // Start the run
             isRunning = true;
             startRunButton.setText("Stop Run");
-            startTime = System.currentTimeMillis();  // Start time for the run
-            totalDistance = 0;  // Reset distance
-            previousLocation = null;  // Reset previous location
-            startLocationUpdates();  // Start location updates
+            startTime = System.currentTimeMillis();
+            totalDistance = 0;
+            previousLocation = null;
+            pathPoints.clear();
+            if (polyline != null) {
+                polyline.remove();
+            }
+            startLocationUpdates();
         } else {
             // Stop the run
             isRunning = false;
             startRunButton.setText("Start Run");
-            fusedLocationClient.removeLocationUpdates(locationCallback);  // Stop location updates
+            fusedLocationClient.removeLocationUpdates(locationCallback);
             saveRunRecord();
         }
     }
@@ -210,20 +215,29 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void saveRunRecord() {
-        // Calculate elapsed time and average speed
-        elapsedTime = System.currentTimeMillis() - startTime; // Elapsed time in ms
-        avgSpeed = (totalDistance / 1000) / (elapsedTime / 3600000f); // km/h
+        elapsedTime = System.currentTimeMillis() - startTime; // זמן הריצה במילישניות
+        avgSpeed = (totalDistance / 1000) / (elapsedTime / 3600000f); // ממיר למהירות בקמ"ש
 
-        // Create a RunRecord object
-        long timestamp = System.currentTimeMillis();
-        RunRecord runRecord = new RunRecord(totalDistance, elapsedTime, avgSpeed, timestamp);
+        RunRecord runRecord = new RunRecord(totalDistance, elapsedTime, avgSpeed, System.currentTimeMillis());
 
-        // Push the data to Firebase
-        String runId = databaseReference.push().getKey(); // Generate a unique key for this run
-        if (runId != null) {
-            databaseReference.child(runId).setValue(runRecord)
-                    .addOnSuccessListener(aVoid -> Log.d("RunFragment", "Run data saved successfully"))
-                    .addOnFailureListener(e -> Log.e("RunFragment", "Error saving run data", e));
+        // שמירת ריצה עם uid של המשתמש המחובר
+        FireBaseHandler.saveRunRecordForCurrentUser(runRecord);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if (mMap != null) {
+                        mMap.setMyLocationEnabled(true);
+                        startLocationUpdates();
+                    }
+                }
+            } else {
+                Log.e("RunFragment", "Location permission denied");
+            }
         }
     }
 }
