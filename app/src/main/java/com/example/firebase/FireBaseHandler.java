@@ -54,7 +54,8 @@ public class FireBaseHandler {
     public void registerUser(String rEmail, String rPassword) {
         if (TextUtils.isEmpty(rEmail) || TextUtils.isEmpty(rPassword)) {
             Toast.makeText(context, "please try again", Toast.LENGTH_SHORT).show();
-        } else {
+        }
+        else {
             auth.createUserWithEmailAndPassword(rEmail, rPassword).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                 @Override
                 public void onSuccess(AuthResult authResult) {
@@ -65,6 +66,7 @@ public class FireBaseHandler {
                     context.startActivity(intent);
 
                 }
+
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -123,6 +125,45 @@ public class FireBaseHandler {
     }
 
 
+
+    public void changePassword(String newPassword) {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(context, "No user signed in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        auth.getCurrentUser().updatePassword(newPassword)
+                .addOnSuccessListener(aVoid -> Toast.makeText(context, "Password updated successfully", Toast.LENGTH_SHORT).show())
+                .addOnFailureListener(e -> Toast.makeText(context, "Failed to update password: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
+
+    public void logout() {
+        if (auth != null) {
+            auth.signOut();
+            Toast.makeText(context, "Logged out successfully", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(context, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
+        }
+    }
+
+    public void deleteAccount() {
+        if (auth.getCurrentUser() == null) {
+            Toast.makeText(context, "No user signed in", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        auth.getCurrentUser().delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(context, "Account deleted successfully", Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(context, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intent);
+                })
+                .addOnFailureListener(e -> Toast.makeText(context, "Failed to delete account: " + e.getMessage(), Toast.LENGTH_LONG).show());
+    }
 
 
 
