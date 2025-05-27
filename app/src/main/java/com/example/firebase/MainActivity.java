@@ -81,10 +81,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void OnclickToBreath(View view) {
-        Intent intent = new Intent(this, Breath.class);
-        startActivity(intent);
-    }
 
     public void onClickToHome(View view) {
         Intent intent = new Intent(this, Home.class);
