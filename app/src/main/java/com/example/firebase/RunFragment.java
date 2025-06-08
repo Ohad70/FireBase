@@ -91,11 +91,10 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
             startTime = System.currentTimeMillis();
             totalDistance = 0;
             previousLocation = null;
-
-            // Reset the path and polyline for new run
             pathPoints.clear();
-            polyline = null;
-
+            if (polyline != null) {
+                polyline.remove();
+            }
             startLocationUpdates();
         } else {
             // Stop the run
@@ -158,24 +157,16 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void updateMap(LatLng newPoint) {
-        // Move camera to new point
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPoint, 17));
 
-        // Add marker at current position
-        mMap.clear();
-        mMap.addMarker(new MarkerOptions().position(newPoint).title("You are here"));
 
-        // Update or create the polyline
-        if (polyline == null) {
-            polyline = mMap.addPolyline(new PolylineOptions()
-                    .add(newPoint)
-                    .color(0xFFFF0000)
-                    .width(10f));
-        } else {
-            List<LatLng> points = polyline.getPoints();
-            points.add(newPoint);
-            polyline.setPoints(points);
+        if (polyline != null) {
+            polyline.remove();
         }
+        polyline = mMap.addPolyline(new PolylineOptions()
+                .addAll(pathPoints)
+                .color(0xFFFF0000) // אדום
+                .width(10f));
     }
 
     @Override
