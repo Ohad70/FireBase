@@ -48,7 +48,6 @@ public class SettingFragment extends Fragment {
         buttonLogout.setOnClickListener(v -> fireBaseHandler.logout());
 
         buttonDeleteAccount.setOnClickListener(v -> {
-            // אם תרצה, אפשר להוסיף פה אישור דיאלוג לפני מחיקה
             fireBaseHandler.deleteAccount();
         });
 

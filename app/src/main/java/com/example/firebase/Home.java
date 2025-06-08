@@ -93,10 +93,6 @@ public class Home extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void onClickToHome(View view) {
-        Intent intent = new Intent(this, Home.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onResume() {

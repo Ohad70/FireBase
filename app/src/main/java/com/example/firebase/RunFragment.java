@@ -127,7 +127,7 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(1000); // Update every 1 seconds
-        locationRequest.setFastestInterval(2000); // Fastest update every 2 seconds
+        locationRequest.setFastestInterval(1000); // Fastest update every 1 seconds
 
         locationCallback = new LocationCallback() {
             @Override
@@ -159,14 +159,18 @@ public class RunFragment extends Fragment implements OnMapReadyCallback {
     private void updateMap(LatLng newPoint) {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(newPoint, 17));
 
-
-        if (polyline != null) {
-            polyline.remove();
+        if (polyline == null) {
+            // אם זה הפעם הראשונה צור קו חדש עם הנקודה הראשונה
+            polyline = mMap.addPolyline(new PolylineOptions()
+                    .add(newPoint)
+                    .color(0xFFFF0000) // אדום
+                    .width(10f));
+        } else {
+            // אחרת, הוסף את הנקודה החדשה לקו הקיים מבלי למחוק אותו
+            List<LatLng> points = polyline.getPoints();
+            points.add(newPoint);
+            polyline.setPoints(points);
         }
-        polyline = mMap.addPolyline(new PolylineOptions()
-                .addAll(pathPoints)
-                .color(0xFFFF0000) // אדום
-                .width(10f));
     }
 
     @Override
